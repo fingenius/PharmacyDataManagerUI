@@ -1,0 +1,35 @@
+{
+  "name": "pharmacydatamanagerui",
+  "version": "1.0.0",
+  "description": "DBMS Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css --watch",
+    "start": "nodemon app.js & npm run tailwind"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fingenius/PharmacyDataManagerUI.git"
+  },
+  "author": "Shantanu",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "nodemon": "^3.1.7",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.12.1",
+    "mysql2": "^3.11.4"
+  },
+  "bugs": {
+    "url": "https://github.com/fingenius/PharmacyDataManagerUI/issues"
+  },
+  "homepage": "https://github.com/fingenius/PharmacyDataManagerUI#readme"
+}

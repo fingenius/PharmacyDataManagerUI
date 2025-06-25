@@ -134,3 +134,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+public/output.css
+src/styles/tailwind.css
+.postcssrc.js
+.postcss-cache/
+
+# SvelteKit build output
+.build
