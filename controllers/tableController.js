@@ -27,5 +27,3 @@ exports.getPharmacyDrugs = (req, res) => {
 exports.getPharmacyContracts = (req, res) => {
   res.render("categories/pharmacy-contracts");
 };
-
-

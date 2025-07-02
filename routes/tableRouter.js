@@ -1,5 +1,6 @@
 const express = require("express");
 const tableRouter = express.Router();
+const { getConnection } = require('../db/oracle');
 
 const tableController = require("../controllers/tableController");
 

@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const { initPool } = require('./db/oracle');
 
 const tableRouter = require("./routes/tableRouter");
 const rootDir = require("./utils/pathUtil");
@@ -15,7 +16,15 @@ app.use(express.urlencoded());
 app.use(express.static(path.join(rootDir, 'public')))
 
 app.use(tableRouter);
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+(async () => {
+  try {
+    await initPool(); // create pool once at startup
+    const PORT = 3000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to start server:", err);
+    process.exit(1);
+  }
+})();
