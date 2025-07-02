@@ -26,7 +26,8 @@
     "express": "^4.21.0",
     "mongodb": "^6.10.0",
     "mongoose": "^8.12.1",
-    "mysql2": "^3.11.4"
+    "mysql2": "^3.11.4",
+    "oracledb": "^6.8.0"
   },
   "bugs": {
     "url": "https://github.com/fingenius/PharmacyDataManagerUI/issues"
