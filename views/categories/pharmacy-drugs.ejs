@@ -130,8 +130,32 @@
       </div>
     </div>
 
+    <!--pharmacy_drug_stock-->
+    <form action="/pharmacy-drugs" method="GET" class="mb-6 flex w-1/2 gap-4 items-center">
+      <input type="text" name="pharmacy_name" placeholder="Pharmacy Name"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= pharmacy_name || '' %>" required/>
+
+      <input type="text" name="pharmacy_address" placeholder="Pharmacy Address"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= pharmacy_address || '' %>" required/>
+
+      <% if (pharmacy_name && pharmacy_address) { %>
+        <a href="/pharmacy-drugs" class="text-sm text-red-600 ">❌</a>
+      <% } %>
+
+      <button type="submit" class="bg-[#007B8A] text-white px-4 py-2 rounded hover:bg-[#006374] transition">
+        Search
+      </button>
+    </form>
+
     <!-- Patient Table -->
     <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <% if (pharmacy_name && pharmacy_address) { %>
+      <div class="text-gray-600 bg-[#f7f9fb] text-sm shadow-none mb-1">
+          Showing drugs for pharmacy: <strong><%= pharmacy_name %></strong> at <strong><%= pharmacy_address %></strong>
+        </div>
+      <% } %>
       <table class="min-w-full divide-y divide-gray-200 text-sm">
         <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
           <tr>

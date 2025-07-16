@@ -13,7 +13,7 @@ async function initPool() {
     poolMax: 5,
     poolIncrement: 1
   });
-  console.log("✅ Oracle connection pool created");
+  console.log("Oracle connection pool created");
 }
 
 async function getConnection() {

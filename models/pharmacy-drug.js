@@ -62,6 +62,24 @@ module.exports = class PharmacyContract {
         await connection.close();
     }
   }
+
+  static async fetchByNameAddress(pharmacy_name, pharmacy_address) {
+    const connection = await getConnection();
+    try {
+        const result = await connection.execute(`
+          SELECT *
+          FROM PHARMACY_DRUGS
+          WHERE phaname = :pharmacy_name AND pha_address = :pharmacy_address
+          ORDER BY pharma_company, drug_name
+          `, {
+            pharmacy_name,
+            pharmacy_address
+        });
+        return result.rows;
+    } finally {
+        await connection.close();
+    }
+  }
   static async deletePharmacyDrug(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME) {
     const connection = await getConnection();
     try {

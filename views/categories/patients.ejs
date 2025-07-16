@@ -119,8 +119,29 @@
       </div>
     </div>
 
+    <!--get_patients_list-->
+    <form action="/patients" method="GET" class="mb-6 flex gap-4 items-center">
+      <input type="text" name="doctorID" placeholder="Search by doctor ID"
+            class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+            value="<%= doctorID || '' %>"/>
+
+      <% if (doctorID) { %>
+        <a href="/patients" class="text-sm text-red-600 ">❌</a>
+      <% } %>
+
+      <button type="submit"
+              class="bg-[#007B8A] text-white px-4 py-2 rounded hover:bg-[#006374] transition">
+        Search
+      </button>
+    </form>
+
     <!-- Patient Table -->
     <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <% if (doctorID) { %>
+        <div class="text-gray-600 bg-[#f7f9fb] text-sm shadow-none mb-1">
+          Showing results for: <strong><%= doctorID %></strong>
+        </div>
+      <% } %>
       <table class="min-w-full divide-y divide-gray-200 text-sm">
         <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
           <tr>

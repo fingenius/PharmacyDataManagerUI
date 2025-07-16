@@ -138,8 +138,39 @@
       </div>
     </div>
 
-    <!-- Patient Table -->
+    <!--get_prescription-->
+    <form action="/prescriptions" method="GET" class="mb-6 flex w-2/3 gap-4 items-center">
+      <input type="number" name="patient_id" placeholder="Patient ID"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= patient_id || '' %>" required/>
+
+      <label for="dateInput" class="w-1/2 font-medium text-gray-700 items-center">Start Date:</label>
+      <input type="date" id="dateInput" name="prescription_start_date" placeholder="Prescription Start Date"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= prescription_start_date || '' %>" required/>
+
+      <label for="dateInput" class="w-1/2 font-medium text-gray-700 items-center">End Date:</label>
+      <input type="date" id="dateInput" name="prescription_end_date" placeholder="Prescription End Date"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= prescription_end_date || '' %>" required/>
+      
+      <% if (patient_id && prescription_start_date && prescription_end_date) { %>
+        <a href="/prescriptions" class="text-sm text-red-600 ">❌</a>
+      <% } %>
+
+      <button type="submit" class="bg-[#007B8A] text-white px-4 py-2 rounded hover:bg-[#006374] transition">
+        Search
+      </button>
+    </form>
+
+
+    <!-- Table -->
     <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <% if (patient_id && prescription_start_date && prescription_end_date) { %>
+      <div class="text-gray-600 bg-[#f7f9fb] text-sm shadow-none mb-1">
+          Showing prescriptions for patient: <strong><%= patient_id %></strong> from <strong> <%= prescription_start_date %></strong> to <strong><%= prescription_end_date %></strong>
+        </div>
+      <% } %>
       <table class="min-w-full divide-y divide-gray-200 text-sm">
         <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
           <tr>

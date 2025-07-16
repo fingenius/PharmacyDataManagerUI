@@ -106,9 +106,30 @@
         </form>
       </div>
     </div>
+    <!--get_drug_details-->
+    <form action="/drugs" method="GET" class="mb-6 flex gap-4 items-center">
+      <input type="text" name="company" placeholder="Search by pharmaceutical company"
+            class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+            value="<%= PHARMACEUTICAL_COMPANY_NAME || '' %>"/>
 
-    <!-- Patient Table -->
+      <% if (PHARMACEUTICAL_COMPANY_NAME) { %>
+        <a href="/drugs" class="text-sm text-red-600 ">❌</a>
+      <% } %>
+
+      <button type="submit"
+              class="bg-[#007B8A] text-white px-4 py-2 rounded hover:bg-[#006374] transition">
+        Search
+      </button>
+    </form>
+
+
+    <!-- Table -->
     <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <% if (PHARMACEUTICAL_COMPANY_NAME) { %>
+        <div class="text-gray-600 bg-[#f7f9fb] text-sm shadow-none mb-1">
+          Showing results for: <strong><%= PHARMACEUTICAL_COMPANY_NAME %></strong>
+        </div>
+      <% } %>
       <table class="min-w-full divide-y divide-gray-200 text-sm">
         <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
           <tr>

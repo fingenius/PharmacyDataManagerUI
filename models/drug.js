@@ -58,6 +58,20 @@ module.exports = class Drug {
         await connection.close();
     }
   }
+
+  static async fetchByCompany(PHARMACEUTICAL_COMPANY_NAME) {
+    const connection = await getConnection();
+    try {
+      const result = await connection.execute(
+        `SELECT * FROM DRUG WHERE PHCOMPANY = :company`,
+        { company: PHARMACEUTICAL_COMPANY_NAME }
+      );
+      return result.rows; 
+    } finally {
+      await connection.close();
+    }
+  }
+
   static async deleteByCompanyTrade(PHCOMPANY, TRADE_NAME) {
     const connection = await getConnection();
     try {

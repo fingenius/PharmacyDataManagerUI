@@ -64,6 +64,31 @@ module.exports = class Prescription {
         await connection.close();
     }
   }
+
+  static async fetchByPatientIDPrescDate(patient_id , prescription_start_date, prescription_end_date) {
+     const connection = await getConnection();
+    try {
+        const result = await connection.execute(
+          `
+            SELECT prescription_date, doctor, pharma_company, drug_name, quantity
+            FROM PRESCRIPTION
+            WHERE patient = :patient_id
+              AND prescription_date BETWEEN :prescription_start_date AND :prescription_end_date
+            ORDER BY prescription_date, doctor
+          `,
+          {
+            patient_id,
+            prescription_start_date: new Date(prescription_start_date),
+            prescription_end_date: new Date(prescription_end_date)
+          }
+        );
+        return result.rows;
+    } finally {
+        await connection.close();
+    }
+  }
+
+
   static async deletePrescription(DOCTOR, PATIENT, PHARMA_COMPANY, DRUG_NAME) {
     const connection = await getConnection();
     try {

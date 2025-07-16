@@ -62,6 +62,21 @@ module.exports = class Patient {
         await connection.close();
     }
   }
+  static async fetchByDoctorId(DID) {
+    const connection = await getConnection();
+    try {
+        const result = await connection.execute(
+        `SELECT P.PAID, P.PNAME, P.PADDRESS, P.PAGE, P.PRIMARY_PHYSICIAN
+        FROM PRESCRIPTION PR
+        JOIN PATIENT P ON PR.patient = P.paid
+        WHERE PR.doctor = :DID`, 
+        { DID }
+      );
+        return result.rows;
+    } finally {
+        await connection.close();
+    }
+  }
   static async deleteById(PAID) {
     const connection = await getConnection();
     try {

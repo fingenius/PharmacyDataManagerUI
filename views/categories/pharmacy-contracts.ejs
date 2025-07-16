@@ -142,8 +142,37 @@
       </div>
     </div>
 
-    <!-- Patient Table -->
+    <!-- PharmacyCompanyContract -->
+    <form action="/pharmacy-contracts" method="GET" class="mb-6 flex w-2/3 gap-4 items-center">
+      <input type="text" name="pharmacy_name" placeholder="Pharmacy Name"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= pharmacy_name || '' %>" required/>
+
+      <input type="text" name="pharmacy_address" placeholder="Pharmacy Address"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= pharmacy_address || '' %>" required/>
+
+      <input type="text" name="pharmaceutical_company_name" placeholder="Pharmaceutical Company Name"
+          class="px-4 py-2 border rounded w-full max-w-md focus:outline-none focus:ring focus:border-[#007B8A]"
+          value="<%= pharmaceutical_company_name || '' %>" required/>
+
+      <% if (pharmacy_name &&  pharmacy_address && pharmaceutical_company_name) { %>
+        <a href="/pharmacy-contracts" class="text-sm text-red-600 ">❌</a>
+      <% } %>
+
+      <button type="submit" class="bg-[#007B8A] text-white px-4 py-2 rounded hover:bg-[#006374] transition">
+        Search
+      </button>
+    </form>
+
+
+    <!-- Table -->
     <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <% if (pharmacy_name &&  pharmacy_address && pharmaceutical_company_name) { %>
+      <div class="text-gray-600 bg-[#f7f9fb] text-sm shadow-none mb-1">
+          Showing contracts for pharmacy: <strong><%= pharmacy_name %></strong>, address: <strong><%= pharmacy_address %></strong>, pharmaceutical company: <strong><%= pharmaceutical_company_name %></strong>
+        </div>
+      <% } %>
       <table class="min-w-full divide-y divide-gray-200 text-sm">
         <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
           <tr>

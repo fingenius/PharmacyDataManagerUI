@@ -67,13 +67,20 @@ exports.postHandleDoctor = async (req, res) => {
 
 
 exports.getPatients = async (req, res) => {
+  const doctorID = req.query.doctorID;
   try{
-    const patients = await Patient.fetchAll();
+    let patients;
+    if(doctorID){
+      patients = await Patient.fetchByDoctorId(doctorID);
+    }else{
+      patients = await Patient.fetchAll();
+    }
     const toast = req.session.toast;
     req.session.toast = null;
     res.render("categories/patients", {
       pageTitle: "Patients",
       patients,
+      doctorID,
       toast : toast || null
     });
   }catch(err){
@@ -231,13 +238,21 @@ exports.postHandlePharmacies = async (req, res) => {
 };
 
 exports.getDrugs = async (req, res) => {
+  const PHARMACEUTICAL_COMPANY_NAME = req.query.company;
   try {
-    const drugs = await Drug.fetchAll();
+    let drugs; 
+    if(PHARMACEUTICAL_COMPANY_NAME){
+      drugs = await Drug.fetchByCompany(PHARMACEUTICAL_COMPANY_NAME);
+    }
+    else{
+      drugs = await Drug.fetchAll();
+    }
     const toast = req.session.toast;
     req.session.toast = null;
     res.render("categories/drugs", {
       pageTitle: "Drugs",
       drugs,
+      PHARMACEUTICAL_COMPANY_NAME,
       toast: toast || null
     });
   } catch (err) {
@@ -286,13 +301,22 @@ exports.postHandleDrugs = async (req,res)=>{
 };
 
 exports.getPrescriptions = async(req, res) => {
+  const {patient_id , prescription_start_date, prescription_end_date} = req.query;
   try {
-    const prescriptions = await Prescription.fetchAll();
+    let prescriptions;
+    if(patient_id && prescription_start_date && prescription_end_date){
+      prescriptions = await Prescription.fetchByPatientIDPrescDate(patient_id, prescription_start_date, prescription_end_date);
+    } else {
+      prescriptions = await Prescription.fetchAll();
+    }
     const toast = req.session.toast;
     req.session.toast = null;
     res.render("categories/prescriptions", {
       pageTitle: "Prescriptions",
       prescriptions,
+      patient_id: patient_id || null,
+      prescription_start_date: prescription_start_date || null,
+      prescription_end_date: prescription_end_date || null,
       toast: toast || null
     });
   } catch (err) {
@@ -340,14 +364,84 @@ exports.postHandlePrescriptions = async(req,res)=>{
   }
 };
 
-exports.getPharmacyContracts = async (req, res) => {
+exports.getPharmacyDrugs = async(req, res) => {
+  const {pharmacy_name, pharmacy_address} = req.query;
   try{
-    const pharmacy_Contracts = await PharmacyContract.fetchAll();
+    let pharmacy_Drugs;
+    if(pharmacy_name && pharmacy_address){
+      pharmacy_Drugs = await PharmacyDrugs.fetchByNameAddress(pharmacy_name, pharmacy_address);
+    } else {
+      pharmacy_Drugs = await PharmacyDrugs.fetchAll();
+    }
+    const toast = req.session.toast;
+    req.session.toast = null;
+    res.render("categories/pharmacy-drugs",{
+      pageTitle: "Pharmacy Drugs",
+      pharmacy_Drugs,
+      pharmacy_name: pharmacy_name || null, 
+      pharmacy_address: pharmacy_address || null,
+      toast: toast || null
+    });
+  }catch(err){
+    console.error("Error fetching pharmacy Drugs:", err);
+    res.status(500).send("Could not retrieve pharmacy Drugs");
+  }
+};
+
+exports.postHandlePharmacyDrugs = async (req, res) => {
+  const action = req.body.action;
+  if (action === "add") {
+    const { PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE } = req.body;
+    const newPharmacyDrug = new PharmacyDrugs(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE);
+    try {
+      const message = await newPharmacyDrug.saveViaProcedure();
+      req.session.toast = { type: "success", message };
+      res.redirect("/pharmacy-drugs");
+    } catch (error) {
+      res.status(500).send("Database error: " + error.message);
+    }
+  } else if (action === "delete") {
+    const { PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME } = req.body;
+    try {
+      const message = await PharmacyDrugs.deletePharmacyDrug(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME);
+      req.session.toast = { type: "success", message };
+      res.redirect("/pharmacy-drugs");
+    } catch (error) {
+      console.error("Error deleting pharmacy drug:", error);
+      res.status(500).send("Database error: " + error.message);
+    }
+  } else if (action === "update") {
+    const { PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE } = req.body;
+    try {
+      const message = await PharmacyDrugs.updatePharmacyDrug(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE);
+      req.session.toast = { type: "success", message };
+      res.redirect("/pharmacy-drugs");
+    } catch (error) {
+      console.error("Error updating pharmacy drug:", error);
+      res.status(500).send("Database error: " + error.message);
+    }
+  } else {
+    res.status(400).send("Invalid action");
+  }
+};
+
+exports.getPharmacyContracts = async (req, res) => {
+  const { pharmacy_name, pharmacy_address, pharmaceutical_company_name } = req.query;
+  try{
+    let pharmacy_Contracts;
+    if(pharmacy_name && pharmacy_address && pharmaceutical_company_name){
+      pharmacy_Contracts = await PharmacyContract.fetchByDetails(pharmacy_name, pharmacy_address, pharmaceutical_company_name);
+    } else {
+      pharmacy_Contracts = await PharmacyContract.fetchAll();
+    }
     const toast = req.session.toast;
     req.session.toast = null;
     res.render("categories/pharmacy-contracts", {
       pageTitle: "Pharmacy Contracts",
       pharmacy_Contracts,
+      pharmacy_name: pharmacy_name || null,
+      pharmacy_address: pharmacy_address || null,
+      pharmaceutical_company_name: pharmaceutical_company_name || null,
       toast: toast || null
     });
   }catch(err){
@@ -393,55 +487,4 @@ exports.postHandlePharmacyContracts = async (req, res) => {
   }
 };
 
-exports.getPharmacyDrugs = async(req, res) => {
-  try{
-    const pharmacy_Drugs = await PharmacyDrugs.fetchAll();
-    const toast = req.session.toast;
-    req.session.toast = null;
-    res.render("categories/pharmacy-drugs",{
-      pageTitle: "Pharmacy Drugs",
-      pharmacy_Drugs,
-      toast: toast || null
-    });
-  }catch(err){
-    console.error("Error fetching pharmacy Drugs:", err);
-    res.status(500).send("Could not retrieve pharmacy Drugs");
-  }
-};
 
-exports.postHandlePharmacyDrugs = async (req, res) => {
-  const action = req.body.action;
-  if (action === "add") {
-    const { PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE } = req.body;
-    const newPharmacyDrug = new PharmacyDrugs(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE);
-    try {
-      const message = await newPharmacyDrug.saveViaProcedure();
-      req.session.toast = { type: "success", message };
-      res.redirect("/pharmacy-drugs");
-    } catch (error) {
-      res.status(500).send("Database error: " + error.message);
-    }
-  } else if (action === "delete") {
-    const { PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME } = req.body;
-    try {
-      const message = await PharmacyDrugs.deletePharmacyDrug(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME);
-      req.session.toast = { type: "success", message };
-      res.redirect("/pharmacy-drugs");
-    } catch (error) {
-      console.error("Error deleting pharmacy drug:", error);
-      res.status(500).send("Database error: " + error.message);
-    }
-  } else if (action === "update") {
-    const { PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE } = req.body;
-    try {
-      const message = await PharmacyDrugs.updatePharmacyDrug(PHANAME, PHA_ADDRESS, PHARMA_COMPANY, DRUG_NAME, PRICE);
-      req.session.toast = { type: "success", message };
-      res.redirect("/pharmacy-drugs");
-    } catch (error) {
-      console.error("Error updating pharmacy drug:", error);
-      res.status(500).send("Database error: " + error.message);
-    }
-  } else {
-    res.status(400).send("Invalid action");
-  }
-};
