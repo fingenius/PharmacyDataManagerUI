@@ -3,9 +3,215 @@
 <body class="bg-[#f7f9fb] font-sans text-[#333]">
   
   <%-include('../partials/navbar')%>
-  <main class="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-8 p-8">
+  <main class="px-6 sm:px-12 md:px-20 lg:px-32 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-[#007B8A]">Pharmacy Contracts</h1>
+      <div class="space-x-3">
+        <button onclick="toggleAddPharmacyContractModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Add Pharmacy Contract
+        </button>
+        <button onclick="toggleDeletePharmacyContractModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Delete Pharmacy Contract
+        </button>
+        <button onclick="toggleUpdatePharmacyContractModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Update Pharmacy Contract
+        </button>
+      </div>
+    </div>  
+  <!-- Add Pharmacy Contract Modal -->
+    <div id="addPharmacyContractModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleAddPharmacyContractModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Add Pharmacy Contract</h2>
+        <hr class="mb-6" />
+
+        <form action="/pharmacy-contracts" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="add" />
+          <div>
+            <label for="pharma_name" class="block font-medium text-gray-700">Pharmacy</label>
+            <input type="text" name="PHANAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pharma_address" class="block font-medium text-gray-700">Pharmacy Address</label>
+            <input type="text" name="PHA_ADDRESS" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pha_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHARMA_COMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="start_date" class="block font-medium text-gray-700">Start Date</label>
+            <input type="date" name="START_DATE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="end_date" class="block font-medium text-gray-700">End Date</label>
+            <input type="date" name="END_DATE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="content" class="block font-medium text-gray-700">Content</label>
+            <input type="text" name="CONTENT" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="supervisor" class="block font-medium text-gray-700">Supervisor</label>
+            <input type="text" name="SUPERVISOR" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Delete PharmacyContract Modal -->
+    <div id="deletePharmacyContractModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleDeletePharmacyContractModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Delete Pharmacy Contract</h2>
+        <hr class="mb-6" />
+
+        <form action="/pharmacy-contracts" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="delete" />
+          <div>
+            <label for="pharma_name" class="block font-medium text-gray-700">Pharmacy</label>
+            <input type="text" name="PHANAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pharma_address" class="block font-medium text-gray-700">Pharmacy Address</label>
+            <input type="text" name="PHA_ADDRESS" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pha_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHARMA_COMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Update PharmacyContract Modal -->
+    <div id="updatePharmacyContractModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleUpdatePharmacyContractModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Update Pharmacy Contract</h2>
+        <hr class="mb-6" />
+
+        <form action="/pharmacy-contracts" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="update" />
+          <div>
+            <label for="pharma_name" class="block font-medium text-gray-700">Pharmacy</label>
+            <input type="text" name="PHANAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pharma_address" class="block font-medium text-gray-700">Pharmacy Address</label>
+            <input type="text" name="PHA_ADDRESS" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pha_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHARMA_COMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="start_date" class="block font-medium text-gray-700">Start Date</label>
+            <input type="date" name="START_DATE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="end_date" class="block font-medium text-gray-700">End Date</label>
+            <input type="date" name="END_DATE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="content" class="block font-medium text-gray-700">Content</label>
+            <input type="text" name="CONTENT" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="supervisor" class="block font-medium text-gray-700">Supervisor</label>
+            <input type="text" name="SUPERVISOR" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Patient Table -->
+    <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
+          <tr>
+            <th class="w-1/12 px-6 py-3 text-center">Pharmacy</th>
+            <th class="w-1/12 px-6 py-3 text-center">Pharmacy Address</th>
+            <th class="w-1/12 px-6 py-3 text-center">Pharmaceutical Company</th>
+            <th class="w-1/12 px-6 py-3 text-center">Start Date</th>
+            <th class="w-1/12 px-6 py-3 text-center">End Date</th>
+            <th class="w-1/3 px-6 py-3 text-center">Content</th>
+            <th class="w-1/12 px-6 py-3 text-center">Supervisor</th>
+          </tr> 
+        </thead>
+        <tbody class="min-w-full divide-y divide-gray-100 text-gray-700">
+          <% if (pharmacy_Contracts.length === 0) { %>
+            <tr>
+              <td colspan="7" class="text-center py-6 text-gray-500">No pharmacy contracts found.</td>
+            </tr>
+          <% } else { %>
+            <% pharmacy_Contracts.forEach(pharmacy_contract => { %>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="w-1/12 px-6 py-3 text-center"><%= pharmacy_contract.PHANAME %></td>
+              <td class="w-1/12 px-6 py-3 text-center"><%= pharmacy_contract.PHA_ADDRESS %></td>
+              <td class="w-1/12 px-6 py-3 text-center"><%= pharmacy_contract.PHARMA_COMPANY %></td>
+              <td class="w-1/12 px-6 py-3 text-center"><%= new Date(pharmacy_contract.START_DATE).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+              <td class="w-1/12 px-6 py-3 text-center"><%= new Date(pharmacy_contract.END_DATE).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+              <td class="w-1/3 px-6 py-3 text-center"><%= pharmacy_contract.CONTENT %></td>
+              <td class="w-1/12 px-6 py-3 text-center"><%= pharmacy_contract.SUPERVISOR %></td>
+            </tr>
+          <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
     
+    <% if (toast) { %>
+      <div id="toast"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded shadow-lg text-white transition-opacity duration-300
+        <%= (toast.type === 'error' || (toast.message[0] === 'E' && toast.message[1] === 'r')) ? 'bg-red-600' : 'bg-green-600' %>">
+        <%= toast.message %>
+        <button onclick="this.parentElement.style.display='none'" class="ml-4 text-white font-bold">×</button>
+      </div>
+    <% } %>
   </main>
+
+  <script>
+    function toggleAddPharmacyContractModal() {
+      const modal = document.getElementById("addPharmacyContractModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleDeletePharmacyContractModal() {
+      const modal = document.getElementById("deletePharmacyContractModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleUpdatePharmacyContractModal() {
+      const modal = document.getElementById("updatePharmacyContractModal");
+      modal.classList.toggle("hidden");
+    }
+    setTimeout(() => {
+      const toast = document.getElementById("toast");
+      if (toast){ 
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 300);
+      }
+    }, 4000);
+  </script>
+
 
 </body>
 </html>

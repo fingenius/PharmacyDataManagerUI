@@ -14,4 +14,13 @@ tableRouter.get("/prescriptions", tableController.getPrescriptions);
 tableRouter.get("/pharmacy-drugs", tableController.getPharmacyDrugs);
 tableRouter.get("/pharmacy-contracts", tableController.getPharmacyContracts);
 
+tableRouter.post("/doctors", tableController.postHandleDoctor);
+tableRouter.post("/patients", tableController.postHandlePatient);
+tableRouter.post("/pharmaceutical-companies", tableController.postHandlePharmaceuticalCompany);
+tableRouter.post("/pharmacies",tableController.postHandlePharmacies);
+tableRouter.post("/drugs", tableController.postHandleDrugs);
+tableRouter.post("/prescriptions", tableController.postHandlePrescriptions);
+tableRouter.post("/pharmacy-contracts", tableController.postHandlePharmacyContracts);
+tableRouter.post("/pharmacy-drugs", tableController.postHandlePharmacyDrugs);
+
 module.exports = tableRouter;

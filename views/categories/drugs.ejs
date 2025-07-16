@@ -3,9 +3,171 @@
 <body class="bg-[#f7f9fb] font-sans text-[#333]">
   
   <%-include('../partials/navbar')%>
-  <main class="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-8 p-8">
+  <main class="px-6 sm:px-12 md:px-20 lg:px-32 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-[#007B8A]">Drugs</h1>
+      <div class="space-x-3">
+        <button onclick="toggleAddDrugModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Add Drug
+        </button>
+        <button onclick="toggleDeleteDrugModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Delete Drug
+        </button>
+        <button onclick="toggleUpdateDrugModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Update Drug
+        </button>
+      </div>
+    </div>
     
+    <!-- Add Drug Modal -->
+    <div id="addDrugModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleAddDrugModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Add Drug</h2>
+        <hr class="mb-6" />
+
+        <form action="/drugs" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="add" />
+          <div>
+            <label for="pharma_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHCOMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="name" class="block font-medium text-gray-700">Trade Name</label>
+            <input type="text" name="TRADE_NAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="formula" class="block font-medium text-gray-700">Formula</label>
+            <input type="text" name="FORMULA" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Delete Drug Modal -->
+    <div id="deleteDrugModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleDeleteDrugModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Delete Drug</h2>
+        <hr class="mb-6" />
+
+        <form action="/drugs" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="delete" />
+          <div>
+            <label for="pharma_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHCOMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="name" class="block font-medium text-gray-700">Trade Name</label>
+            <input type="text" name="TRADE_NAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Update Drug Modal -->
+    <div id="updateDrugModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleUpdateDrugModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Update Patient</h2>
+        <hr class="mb-6" />
+
+        <form action="/drugs" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="update" />
+          <div>
+            <label for="pharma_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHCOMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="name" class="block font-medium text-gray-700">Trade Name</label>
+            <input type="text" name="TRADE_NAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="formula" class="block font-medium text-gray-700">Formula</label>
+            <input type="text" name="FORMULA" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Patient Table -->
+    <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
+          <tr>
+            <th class="w-1/3 px-6 py-3 text-center">Pharmaceutical Company</th>
+            <th class="w-1/3 px-6 py-3 text-center">Trade Name</th>
+            <th class="w-1/3 px-6 py-3 text-center">Formula</th>
+          </tr> 
+        </thead>
+        <tbody class="min-w-full divide-y divide-gray-100 text-gray-700">
+          <% if (drugs.length === 0) { %>
+            <tr>
+              <td colspan="5" class="text-center py-6 text-gray-500">No patients found.</td>
+            </tr>
+          <% } else { %>
+            <% drugs.forEach(drug => { %>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="w-1/3 px-6 py-3 text-center"><%= drug.PHCOMPANY %></td>
+              <td class="w-1/3 px-6 py-3 text-center"><%= drug.TRADE_NAME %></td>
+              <td class="w-1/3 px-6 py-3 text-center"><%= drug.FORMULA %></td>
+            </tr>
+          <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if (toast) { %>
+      <div id="toast"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded shadow-lg text-white transition-opacity duration-300
+        <%= (toast.type === 'error' || (toast.message[0] === 'E' && toast.message[1] === 'r')) ? 'bg-red-600' : 'bg-green-600' %>">
+        <%= toast.message %>
+        <button onclick="this.parentElement.style.display='none'" class="ml-4 text-white font-bold">×</button>
+      </div>
+    <% } %>
   </main>
 
+  <script>
+    function toggleAddDrugModal() {
+      const modal = document.getElementById("addDrugModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleDeleteDrugModal() {
+      const modal = document.getElementById("deleteDrugModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleUpdateDrugModal() {
+      const modal = document.getElementById("updateDrugModal");
+      modal.classList.toggle("hidden");
+    }
+    setTimeout(() => {
+      const toast = document.getElementById("toast");
+      if (toast){ 
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 300);
+      }
+    }, 4000);
+  </script>
+  
 </body>
 </html>

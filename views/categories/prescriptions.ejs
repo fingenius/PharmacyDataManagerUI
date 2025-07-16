@@ -3,9 +3,208 @@
 <body class="bg-[#f7f9fb] font-sans text-[#333]">
   
   <%-include('../partials/navbar')%>
-  <main class="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-8 p-8">
+  <main class="px-6 sm:px-12 md:px-20 lg:px-32 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-[#007B8A]">Prescriptions</h1>
+      <div class="space-x-3">
+        <button onclick="toggleAddPrescriptionModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Add Prescription
+        </button>
+        <button onclick="toggleDeletePrescriptionModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Delete Prescription
+        </button>
+        <button onclick="toggleUpdatePrescriptionModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Update Prescription
+        </button>
+      </div>
+    </div>  
+  <!-- Add Prescription Modal -->
+    <div id="addPrescriptionModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleAddPrescriptionModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Add Prescription</h2>
+        <hr class="mb-6" />
+
+        <form action="/prescriptions" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="add" />
+          <div>
+            <label for="did" class="block font-medium text-gray-700">Doctor ID</label>
+            <input type="number" name="DOCTOR" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pid" class="block font-medium text-gray-700">Patient ID</label>
+            <input type="number" name="PATIENT" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pha_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHARMA_COMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="age" class="block font-medium text-gray-700">Drug Name</label>
+            <input type="text" name="DRUG_NAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="Prescription_date" class="block font-medium text-gray-700">Prescription Date</label>
+            <input type="date" name="PRESCRIPTION_DATE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="qty" class="block font-medium text-gray-700">Quantity</label>
+            <input type="number" name="QUANTITY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Delete Prescription Modal -->
+    <div id="deletePrescriptionModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleDeletePrescriptionModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Delete Prescription</h2>
+        <hr class="mb-6" />
+
+        <form action="/patients" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="delete" />
+          <div>
+            <label for="did" class="block font-medium text-gray-700">Doctor ID</label>
+            <input type="number" name="DOCTOR" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pid" class="block font-medium text-gray-700">Patient ID</label>
+            <input type="number" name="PATIENT" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pha_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHARMA_COMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="drug_name" class="block font-medium text-gray-700">Drug Name</label>
+            <input type="text" name="DRUG_NAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Update Prescription Modal -->
+    <div id="updatePrescriptionModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleUpdatePrescriptionModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Update Prescription</h2>
+        <hr class="mb-6" />
+
+        <form action="/patients" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="update" />
+          <div>
+            <label for="did" class="block font-medium text-gray-700">Doctor ID</label>
+            <input type="number" name="DOCTOR" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pid" class="block font-medium text-gray-700">Patient ID</label>
+            <input type="number" name="PATIENT" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="pha_company" class="block font-medium text-gray-700">Pharmaceutical Company</label>
+            <input type="text" name="PHARMA_COMPANY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="drug_name" class="block font-medium text-gray-700">Drug Name</label>
+            <input type="text" name="DRUG_NAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="prescription_date" class="block font-medium text-gray-700">Prescription Date</label>
+            <input type="date" name="PRESCRIPTION_DATE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="qty" class="block font-medium text-gray-700">Quantity</label>
+            <input type="number" name="QUANTITY" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Patient Table -->
+    <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
+          <tr>
+            <th class="w-1/6 px-6 py-3 text-center">DocID</th>
+            <th class="w-1/6 px-6 py-3 text-center">PatID</th>
+            <th class="w-1/6 px-6 py-3 text-center">Pharmaceutical Company</th>
+            <th class="w-1/6 px-6 py-3 text-center">Drug Name</th>
+            <th class="w-1/6 px-6 py-3 text-center">Prescription Date</th>
+            <th class="w-1/6 px-6 py-3 text-center">Quantity</th>
+          </tr> 
+        </thead>
+        <tbody class="min-w-full divide-y divide-gray-100 text-gray-700">
+          <% if (prescriptions.length === 0) { %>
+            <tr>
+              <td colspan="6" class="text-center py-6 text-gray-500">No prescriptions found.</td>
+            </tr>
+          <% } else { %>
+            <% prescriptions.forEach(prescription => { %>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="w-1/6 px-6 py-3 text-center"><%= prescription.DOCTOR %></td>
+              <td class="w-1/6 px-6 py-3 text-center"><%= prescription.PATIENT %></td>
+              <td class="w-1/6 px-6 py-3 text-center"><%= prescription.PHARMA_COMPANY %></td>
+              <td class="w-1/6 px-6 py-3 text-center"><%= prescription.DRUG_NAME %></td>
+              <td class="w-1/6 px-6 py-3 text-center"><%= new Date(prescription.PRESCRIPTION_DATE).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+              <td class="w-1/6 px-6 py-3 text-center"><%= prescription.QUANTITY %></td>
+            </tr>
+          <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
     
+    <% if (toast) { %>
+      <div id="toast"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded shadow-lg text-white transition-opacity duration-300
+        <%= (toast.type === 'error' || (toast.message[0] === 'E' && toast.message[1] === 'r')) ? 'bg-red-600' : 'bg-green-600' %>">
+        <%= toast.message %>
+        <button onclick="this.parentElement.style.display='none'" class="ml-4 text-white font-bold">×</button>
+      </div>
+    <% } %>
   </main>
+
+  <script>
+    function toggleAddPrescriptionModal() {
+      const modal = document.getElementById("addPrescriptionModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleDeletePrescriptionModal() {
+      const modal = document.getElementById("deletePrescriptionModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleUpdatePrescriptionModal() {
+      const modal = document.getElementById("updatePrescriptionModal");
+      modal.classList.toggle("hidden");
+    }
+    setTimeout(() => {
+      const toast = document.getElementById("toast");
+      if (toast){ 
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 300);
+      }
+    }, 4000);
+  </script>
 
 </body>
 </html>

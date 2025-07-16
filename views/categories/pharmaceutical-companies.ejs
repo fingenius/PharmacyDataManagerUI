@@ -3,9 +3,155 @@
 <body class="bg-[#f7f9fb] font-sans text-[#333]">
   
   <%-include('../partials/navbar')%>
-  <main class="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-8 p-8">
-    
+  <main class="px-6 sm:px-12 md:px-20 lg:px-32 py-8">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-[#007B8A]">Pharmaceutical Companies</h1>
+      <div class="space-x-3">
+        <button onclick="toggleAddPharmaceuticalCompanyModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Add Pharmaceutical Company
+        </button>
+        <button onclick="toggleDeletePharmaceuticalCompanyModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Delete Pharmaceutical Company
+        </button>
+        <button onclick="toggleUpdatePharmaceuticalCompanyModal()" class="bg-[#007B8A] text-white px-4 py-2 rounded-md hover:bg-[#006374] transition">
+          Update Pharmaceutical Company
+        </button>
+      </div>
+    </div>
+     <!-- Add Pharmaceutical Company Modal -->
+    <div id="addPharmaceuticalCompanyModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleAddPharmaceuticalCompanyModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Add Pharmaceutical Company</h2>
+        <hr class="mb-6" />
+
+        <form action="/pharmaceutical-companies" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="add" />
+          <div>
+            <label for="name" class="block font-medium text-gray-700">Name</label>
+            <input type="text" name="PHCNAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="phone" class="block font-medium text-gray-700">Phone Number</label>
+            <input type="text" name="PHCPHONE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Delete Pharmaceutical Company Modal -->
+    <div id="deletePharmaceuticalCompanyModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleDeletePharmaceuticalCompanyModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Delete Pharmaceutical Company</h2>
+        <hr class="mb-6" />
+
+        <form action="/pharmaceutical-companies" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="delete" />
+          <div>
+            <label for="name" class="block font-medium text-gray-700">Name</label>
+            <input type="text" name="PHCNAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Update Pharmaceutical Company Modal -->
+    <div id="updatePharmaceuticalCompanyModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50 hidden">
+      <div class="bg-white w-full max-w-xl rounded-lg shadow-lg p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onclick="toggleUpdatePharmaceuticalCompanyModal()" class="absolute top-4 right-4 text-gray-600 text-xl hover:text-red-600">&times;</button>
+
+        <h2 class="text-xl font-semibold text-[#007B8A] mb-4 text-center">Update Pharmaceutical Company</h2>
+        <hr class="mb-6" />
+
+        <form action="/pharmaceutical-companies" method="POST" class="space-y-4">
+          <input type="hidden" name="action" value="update" />
+          <div>
+            <label for="name" class="block font-medium text-gray-700">Name</label>
+            <input type="text" name="PHCNAME" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div>
+            <label for="phone" class="block font-medium text-gray-700">Phone Number</label>
+            <input type="text" name="PHCPHONE" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-[#007B8A]" />
+          </div>
+          <div class="text-right">
+            <button type="submit" class="bg-[#007B8A] text-white px-5 py-2 rounded hover:bg-[#006374] transition">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Doctor Table -->
+    <div class="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-[#007B8A] text-white uppercase tracking-wider">
+          <tr>
+            <th class="px-6 py-3 text-center">Name</th>
+            <th class="px-6 py-3 text-center">Phone Number</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 text-gray-700">
+          <% if (pharmaceuticalCompanies.length === 0) { %>
+            <tr>
+              <td colspan="4" class="text-center py-6 text-gray-500">No pharmaceutical company found.</td>
+            </tr>
+          <% } else { %>
+            <% pharmaceuticalCompanies.forEach(company => { %>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-6 py-3 text-center"><%= company.PHCNAME %></td>
+              <td class="px-6 py-3 text-center"><%= company.PHCPHONE %></td>
+            </tr>
+          <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <% if (toast) { %>
+      <div id="toast"
+        class="fixed bottom-5 right-5 z-50 px-6 py-3 rounded shadow-lg text-white transition-opacity duration-300
+        <%= (toast.type === 'error' || (toast.message[0] === 'E' && toast.message[1] === 'r')) ? 'bg-red-600' : 'bg-green-600' %>">
+        <%= toast.message %>
+        <button onclick="this.parentElement.style.display='none'" class="ml-4 text-white font-bold">×</button>
+      </div>
+    <% } %>
   </main>
+
+  <script>
+    function toggleAddPharmaceuticalCompanyModal() {
+      const modal = document.getElementById("addPharmaceuticalCompanyModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleDeletePharmaceuticalCompanyModal() {
+      const modal = document.getElementById("deletePharmaceuticalCompanyModal");
+      modal.classList.toggle("hidden");
+    }
+    function toggleUpdatePharmaceuticalCompanyModal() {
+      const modal = document.getElementById("updatePharmaceuticalCompanyModal");
+      modal.classList.toggle("hidden");
+    }
+    setTimeout(() => {
+      const toast = document.getElementById("toast");
+      if (toast){ 
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 300);
+      }
+    }, 4000);
+  </script>
 
 </body>
 </html>
